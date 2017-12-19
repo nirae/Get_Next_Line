@@ -6,7 +6,7 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:47:49 by ndubouil          #+#    #+#             */
-/*   Updated: 2017/12/18 14:51:09 by ndubouil         ###   ########.fr       */
+/*   Updated: 2017/12/19 15:17:26 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ t_file	*ft_newfile(int fd)
 int		get_next_line(const int fd, char **line)
 {
 	static t_list	*lst;
-	t_file			*file;
 	int				n_lus;
 	//char			tmp[BUFF_SIZE];
 	char			*tmp;
@@ -76,43 +75,50 @@ int		get_next_line(const int fd, char **line)
 
 	if (!(tmp_lst = ft_lstsearch(lst, fd)))
 	{
-		file = ft_newfile(fd);
-		if (!lst)
+		if (lst == NULL)
 		{
-			if (!(lst = ft_lstnew(file, sizeof(t_file *))))
+			if (!(lst = ft_lstnew(ft_newfile(fd), sizeof(t_file *))))
 				return (-1);
 		}
 		else
-			ft_lstaddend(&lst, ft_lstnew(file, sizeof(t_file *)));
+			ft_lstaddend(&lst, ft_lstnew(ft_newfile(fd), sizeof(t_file *)));
+		tmp_lst = ft_lstsearch(lst, fd);
 	}
 	result = ft_strnew(0);
-	tmp = ft_strnew(BUFF_SIZE);
+	tmp = ft_strnew(sizeof(char) * BUFF_SIZE);
+	if (((t_file *)(tmp_lst->content))->buff != NULL)
+	{
+		ft_putnbr((int)ft_strlen(((t_file *)(tmp_lst->content))->buff));
+		tmp = ft_strjoin(tmp, ((t_file *)(tmp_lst->content))->buff);
+		ft_memdel((void **)(&((t_file *)(tmp_lst->content))->buff));
+	}
+
 	while ((n_lus = read(fd, tmp, BUFF_SIZE)) > 0)
 	{
-		if (((t_file *)(tmp_lst->content))->buff != NULL)
-			tmp = ft_strjoin(tmp, ((t_file *)(tmp_lst->content))->buff);
 		// Si il y a un '\n' dans le buffer
 		if ((pos = ft_strmatch(tmp, '\n')) >= 0)
 		{
 			// recupere le troncon jusqu'au '\n'
 			temp = ft_strsub(tmp, 0, pos);
 			// l'ajoute au resultat
-			result = ft_strjoin(result,	 temp);
+			result = ft_strjoin(result, temp);
 			// free le temp
-			ft_strdel(&temp);
+			//ft_strdel(&temp);
+			// Passe le \n
+			read(fd, "", 1);
 			// ajoute le reste du buffer dans la liste
 			if (!(((t_file *)(tmp_lst->content))->buff = ft_strsub(tmp, pos + 1, BUFF_SIZE)))
 				return (-1);
 			break;
 		}
-		temp = ft_strsub(tmp, 0, n_lus);
-		result = ft_strjoin(result, temp);
+		//temp = ft_strsub(tmp, 0, n_lus);
+		result = ft_strjoin(result, tmp);
 		//ft_strdel(&temp);
 		// Fin de fichier
 		if (n_lus < BUFF_SIZE)
 			break;
 	}
 	*line = result;
-	//ft_putendl(result);
+	ft_putstr(result);
 	return (0);
 }
