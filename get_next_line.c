@@ -6,13 +6,13 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:47:49 by ndubouil          #+#    #+#             */
-/*   Updated: 2017/12/19 15:17:26 by ndubouil         ###   ########.fr       */
+/*   Updated: 2017/12/20 23:23:10 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		ft_strmatch(const char *s, int c)
+int		ft_strpos(const char *s, int c)
 {
 	int i;
 
@@ -28,29 +28,6 @@ int		ft_strmatch(const char *s, int c)
 	return (-1);
 }
 
-t_list		*ft_lstsearch(t_list *lst, int fd)
-{
-	while (lst != NULL)
-	{
-		if (((t_file *)lst->content)->fd == fd)
-			return (lst);
-		lst = lst->next;
-	}
-	return (NULL);
-}
-
-/*void	ft_strreanew(char **str1, char *str2)
-{
-	char	*result;
-
-	// Verifier la taille
-	if ((result = ft_strjoin(*str1, str2)))
-	{
-		ft_strdel(str1);
-		*str1 = result;
-	}
-}*/
-
 t_file	*ft_newfile(int fd)
 {
 	t_file *file;
@@ -58,10 +35,68 @@ t_file	*ft_newfile(int fd)
 	if (!(file = ft_memalloc(sizeof(t_file *))))
 		return (NULL);
 	file->fd = fd;
-	file->buff = NULL;
+	if (!(file->buff = ft_strnew(0)))
+	{
+		ft_memdel((void **)&file);
+		return (NULL);
+	}
 	return (file);
 }
 
+t_list		*ft_lstsearch(t_list **lst, int fd)
+{
+	t_list		*tmp;
+
+	tmp = *lst;
+	while (tmp != NULL)
+	{
+		if (T_FILE_FD == fd)
+		{
+			ft_putendl("fd trouve");
+			return (tmp);
+		}
+		tmp = tmp->next;
+	}
+	//if (!(tmp = ft_lstnew(ft_newfile(fd), sizeof(t_file *))))
+	if (!(tmp = ft_lstnew(NULL, sizeof(t_file *))))
+		return (NULL);
+	tmp->content = ft_newfile(fd);
+	ft_lstadd(lst, tmp);
+	return (tmp);
+}
+
+
+int		get_next_line(const int fd, char **line)
+{
+	static t_list	*lst;
+	t_list			*tmp;
+	char			*buff;
+	int				n_lus;
+	char			*temp;
+
+	if (BUFF_SIZE <= 0 || fd == 1 || (n_lus = read(fd, "", 0)) == -1)
+		return (-1);
+	if (!(buff = ft_strnew(sizeof(char) * BUFF_SIZE + 1)))
+		return (-1);
+	ft_lstsearch(&lst, fd);
+	//tmp->content = ft_newfile(fd);
+	if (T_FILE_BUFF == NULL)
+		ft_putendl("null");
+	//T_FILE_BUFF = ft_strjoin(T_FILE_BUFF, "test");
+	//ft_putstr(T_FILE_BUFF);
+	while ((ft_strpos(T_FILE_BUFF, '\n') < 0) && (n_lus = read(fd, buff, BUFF_SIZE) > 0))
+	{
+		temp = T_FILE_BUFF;
+		T_FILE_BUFF = ft_strjoin(T_FILE_BUFF, buff);
+		//ft_putendl(T_FILE_BUFF);
+		ft_strdel(&temp);
+	}
+	*line = ft_strsub(T_FILE_BUFF, 0, ft_strpos(T_FILE_BUFF, '\n'));
+	T_FILE_BUFF = ft_strsub(temp, ft_strpos(temp, '\n') + 1, ft_strpos(temp, '\0') - 1);
+	return (1);
+}
+
+/*
 int		get_next_line(const int fd, char **line)
 {
 	static t_list	*lst;
@@ -121,4 +156,4 @@ int		get_next_line(const int fd, char **line)
 	*line = result;
 	ft_putstr(result);
 	return (0);
-}
+}*/
