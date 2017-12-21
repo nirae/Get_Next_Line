@@ -6,7 +6,7 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:47:49 by ndubouil          #+#    #+#             */
-/*   Updated: 2017/12/21 01:04:26 by ndubouil         ###   ########.fr       */
+/*   Updated: 2017/12/21 20:00:42 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ t_list		*ft_lstsearch(t_list **lst, int fd)
 		}
 		tmp = tmp->next;
 	}
-	//if (!(tmp = ft_lstnew(ft_newfile(fd), sizeof(t_file *))))
 	if (!(tmp = ft_lstnew(NULL, sizeof(t_file *))))
 		return (NULL);
 	tmp->content = ft_newfile(fd);
@@ -68,33 +67,61 @@ t_list		*ft_lstsearch(t_list **lst, int fd)
 
 int		get_next_line(const int fd, char **line)
 {
-	static t_list	*lst;
+	static t_list	*lst = NULL;
 	t_list			*tmp;
 	char			*buff;
 	int				n_lus;
 	char			*temp;
+	int				opt;
 
 	if (BUFF_SIZE <= 0 || fd == 1 || (n_lus = read(fd, "", 0)) == -1)
 		return (-1);
-	if (!(buff = ft_strnew(sizeof(char) * BUFF_SIZE + 1)))
+	if (!(buff = ft_strnew(BUFF_SIZE)))
 		return (-1);
 	tmp = ft_lstsearch(&lst, fd);
-	if (T_FILE_BUFF == NULL)
-		ft_putendl("null");
+	//if (T_FILE_BUFF == NULL)
+	//	ft_putendl("null");
 	//T_FILE_BUFF = ft_strjoin(T_FILE_BUFF, "test");
 	//ft_putstr(T_FILE_BUFF);
-	while ((ft_strpos(T_FILE_BUFF, '\n') < 0) && (n_lus = read(fd, buff, BUFF_SIZE) > 0))
+	while (!ft_strchr(T_FILE_BUFF, '\n') && (n_lus = read(fd, buff, BUFF_SIZE) > 0))
 	{
 		temp = T_FILE_BUFF;
+		//ft_putendl(temp);
 		T_FILE_BUFF = ft_strjoin(T_FILE_BUFF, buff);
 		//ft_putendl(T_FILE_BUFF);
 		ft_strdel(&temp);
+		ft_memset(buff, 0, BUFF_SIZE);
 	}
-
+	ft_strdel(&buff);
+	//if (n_lus == 0 && T_FILE_BUFF == '\0')
+//	ft_putendl("je passe ici");
 	*line = ft_strsub(T_FILE_BUFF, 0, ft_strpos(T_FILE_BUFF, '\n'));
-	if (n_lus == 0 && T_FILE_BUFF == '\0')
+	if (n_lus == 0 && *T_FILE_BUFF == 0)//ft_strchr(T_FILE_BUFF, '\n') == NULL)
+	{
+		ft_memdel((void **)&T_FILE_BUFF);
+		ft_memdel(&tmp->content);
+		//T_FILE_BUFF = ft_strnew(0);
+		/*ft_putendl("Etat du buffer du maillon :");
+		ft_putendl(T_FILE_BUFF);
+		ft_putendl("fichier termine !");*/
+		//ft_memdel((void **)&T_FILE_BUFF);
+		//T_FILE_BUFF = ft_strnew(0);
+		//*line = ft_strsub(T_FILE_BUFF, 0, ft_strpos(T_FILE_BUFF, '\0'));
 		return (0);
-	T_FILE_BUFF = ft_strsub(T_FILE_BUFF, ft_strpos(T_FILE_BUFF, '\n') + 1, (int)ft_strlen(T_FILE_BUFF) - ft_strpos(T_FILE_BUFF, '\n'));
+	}
+	if (ft_strpos(T_FILE_BUFF, '\n') == (int)ft_strlen(T_FILE_BUFF))
+		opt = 0;
+	else
+		opt = 1;
+//	ft_putendl("je passe la");
+	//ft_putendl(*line);
+	//T_FILE_BUFF = ft_strchr(T_FILE_BUFF, '\n');
+	temp = T_FILE_BUFF;
+	T_FILE_BUFF = ft_strsub(T_FILE_BUFF, ft_strpos(T_FILE_BUFF, '\n') + opt, (int)ft_strlen(T_FILE_BUFF));
+	ft_strdel(&temp);
+	/*ft_putendl("Etat du buffer du maillon :");
+	ft_putendl(T_FILE_BUFF);
+	ft_putendl("FINI");*/
 	return (1);
 }
 
