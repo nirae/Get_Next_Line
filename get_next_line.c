@@ -6,7 +6,7 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:47:49 by ndubouil          #+#    #+#             */
-/*   Updated: 2017/12/20 23:23:10 by ndubouil         ###   ########.fr       */
+/*   Updated: 2017/12/21 01:04:26 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		ft_strpos(const char *s, int c)
 			return (i);
 		i++;
 	}
-	return (-1);
+	return (i);
 }
 
 t_file	*ft_newfile(int fd)
@@ -52,7 +52,7 @@ t_list		*ft_lstsearch(t_list **lst, int fd)
 	{
 		if (T_FILE_FD == fd)
 		{
-			ft_putendl("fd trouve");
+			//ft_putendl("fd trouve");
 			return (tmp);
 		}
 		tmp = tmp->next;
@@ -78,8 +78,7 @@ int		get_next_line(const int fd, char **line)
 		return (-1);
 	if (!(buff = ft_strnew(sizeof(char) * BUFF_SIZE + 1)))
 		return (-1);
-	ft_lstsearch(&lst, fd);
-	//tmp->content = ft_newfile(fd);
+	tmp = ft_lstsearch(&lst, fd);
 	if (T_FILE_BUFF == NULL)
 		ft_putendl("null");
 	//T_FILE_BUFF = ft_strjoin(T_FILE_BUFF, "test");
@@ -91,8 +90,11 @@ int		get_next_line(const int fd, char **line)
 		//ft_putendl(T_FILE_BUFF);
 		ft_strdel(&temp);
 	}
+
 	*line = ft_strsub(T_FILE_BUFF, 0, ft_strpos(T_FILE_BUFF, '\n'));
-	T_FILE_BUFF = ft_strsub(temp, ft_strpos(temp, '\n') + 1, ft_strpos(temp, '\0') - 1);
+	if (n_lus == 0 && T_FILE_BUFF == '\0')
+		return (0);
+	T_FILE_BUFF = ft_strsub(T_FILE_BUFF, ft_strpos(T_FILE_BUFF, '\n') + 1, (int)ft_strlen(T_FILE_BUFF) - ft_strpos(T_FILE_BUFF, '\n'));
 	return (1);
 }
 
