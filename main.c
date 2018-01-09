@@ -6,7 +6,7 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2017/12/22 22:56:24 by ndubouil         ###   ########.fr       */
+/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ int		main(int argc, char **argv)
 {
 	int		fd;
 	char	*line;
-	int i = 0;
+	int		i;
 
 	line = NULL;
+	i = 0;
 	if (argc == 2)
 	{
 		if ((fd = open(argv[1], O_RDONLY)) < 0)
@@ -28,8 +29,7 @@ int		main(int argc, char **argv)
 		{
 			i++;
 			ft_putendl(line);
-			//ft_memdel((void **)&line);
-		}	
+		}
 		ft_putnbr(i);
 		close(fd);
 	}
