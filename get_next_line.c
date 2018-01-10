@@ -6,27 +6,11 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:47:49 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:23:58 by ndubouil         ###   ########.fr       */
+/*   Updated: 2018/01/10 16:34:34 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int		ft_strpos(const char *s, int c)
-{
-	int i;
-
-	if (s == NULL || (char)c == 0)
-		return (-1);
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == c)
-			return (i);
-		i++;
-	}
-	return (i);
-}
 
 t_file	*ft_newfile(int fd)
 {
