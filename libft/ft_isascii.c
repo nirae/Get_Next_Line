@@ -1,37 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/14 15:44:52 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/14 15:48:48 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+int		ft_isascii(int c)
 {
-	int		fd;
-	char	*line;
-	int		i;
-
-	line = NULL;
-	i = 0;
-	if (argc == 2)
-	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
-	}
+	if (c >= 0 && c <= 0177)
+		return (1);
 	return (0);
 }

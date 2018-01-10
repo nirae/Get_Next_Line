@@ -6,23 +6,25 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:37:46 by ndubouil          #+#    #+#             */
-/*   Updated: 2017/12/14 09:08:46 by ndubouil         ###   ########.fr       */
+/*   Updated: 2018/01/10 17:08:53 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GNL_H
-# define GNL_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# include "libft/libft.h"
+# include "libft/includes/libft.h"
 
-# define BUFF_SIZE 4096
+# define BUFF_SIZE 7
+# define T_FILE_BUFF ((t_file *)(tmp->content))->buff
+# define T_FILE_FD ((t_file *)(tmp->content))->fd
 
 typedef struct			s_file
 {
 	int					fd;
-	char				*current_line;
+	char				*buff;
 }						t_file;
 
-int		get_next_line(const int fd, char **line);
+int						get_next_line(const int fd, char **line);
 
 #endif

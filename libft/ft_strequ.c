@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strequ.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/14 09:01:01 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/22 14:01:32 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+int		ft_strequ(char const *s1, char const *s2)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	unsigned int i;
 
-	line = NULL;
+	if (s1 == NULL || s2 == NULL)
+		return (0);
 	i = 0;
-	if (argc == 2)
+	while ((s1[i] != '\0') || (s2[i] != '\0'))
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
+		if (s1[i] != s2[i])
 			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
+		i++;
 	}
-	return (0);
+	return (1);
 }

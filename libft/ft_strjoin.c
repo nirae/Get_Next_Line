@@ -1,37 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/15 09:00:17 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/22 13:58:04 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		fd;
-	char	*line;
+	char	*result;
 	int		i;
+	int		j;
 
-	line = NULL;
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	if (!(result = ft_strnew(ft_strlen(s1) + ft_strlen(s2) + 1)))
+		return (NULL);
+	j = 0;
 	i = 0;
-	if (argc == 2)
+	while (s1[i] != '\0')
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
+		result[j] = s1[i];
+		j++;
+		i++;
 	}
-	return (0);
+	i = 0;
+	while (s2[i] != '\0')
+	{
+		result[j] = s2[i];
+		j++;
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
 }

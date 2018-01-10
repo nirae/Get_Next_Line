@@ -1,37 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/21 08:35:43 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/22 14:39:09 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	int		fd;
-	char	*line;
 	int		i;
+	char	*dest;
+	char	*source;
 
-	line = NULL;
-	i = 0;
-	if (argc == 2)
+	dest = (char *)dst;
+	source = (char *)src;
+	if (source < dest)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
+		i = (int)len - 1;
+		while (i >= 0)
 		{
-			i++;
-			ft_putendl(line);
+			dest[i] = source[i];
+			i--;
 		}
-		ft_putnbr(i);
-		close(fd);
 	}
-	return (0);
+	else
+	{
+		i = 0;
+		while (i < (int)len)
+		{
+			dest[i] = source[i];
+			i++;
+		}
+	}
+	return (dst);
 }

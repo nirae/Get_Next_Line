@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/21 08:20:01 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/21 08:34:01 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	unsigned int	i;
+	char			*dest;
+	char			*source;
 
-	line = NULL;
+	source = (char *)src;
+	dest = (char *)dst;
 	i = 0;
-	if (argc == 2)
+	while (i < n)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
+		dest[i] = source[i];
+		i++;
 	}
-	return (0);
+	return (dst);
 }

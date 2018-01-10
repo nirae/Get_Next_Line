@@ -1,37 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/20 07:49:37 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/22 12:08:52 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+int		ft_atoi(const char *str)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	int i;
+	int is_neg;
+	int result;
 
-	line = NULL;
+	result = 0;
 	i = 0;
-	if (argc == 2)
+	is_neg = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '-')
+		is_neg = 1;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (ft_isdigit(str[i]))
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
+		result = (str[i] - '0') + result * 10;
+		i++;
 	}
-	return (0);
+	if (is_neg)
+		return (-result);
+	return (result);
 }

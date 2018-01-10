@@ -1,37 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/16 08:11:21 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/21 10:00:19 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+size_t		ft_strlcat(char *dst, const char *src, size_t size)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	size_t i;
+	size_t j;
+	size_t dst_len;
+	size_t src_len;
 
-	line = NULL;
 	i = 0;
-	if (argc == 2)
+	dst_len = ft_strlen(dst);
+	src_len = ft_strlen(src);
+	j = dst_len;
+	if (dst_len > size)
+		return (src_len + size);
+	else if (dst_len < size)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
+		while (j < size - 1 && src[i] != '\0')
 		{
+			dst[j] = src[i];
 			i++;
-			ft_putendl(line);
+			j++;
 		}
-		ft_putnbr(i);
-		close(fd);
+		dst[j] = '\0';
 	}
-	return (0);
+	return (src_len + dst_len);
 }

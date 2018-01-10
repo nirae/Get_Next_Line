@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/13 23:56:35 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/14 10:15:59 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+static void		ft_calcul_nb(int nb, int fd)
 {
-	int		fd;
-	char	*line;
-	int		i;
-
-	line = NULL;
-	i = 0;
-	if (argc == 2)
+	if (nb >= 10 || nb <= -10)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
+		ft_calcul_nb(nb / 10, fd);
+		ft_calcul_nb(nb % 10, fd);
 	}
-	return (0);
+	else if (nb >= 0)
+		ft_putchar_fd(nb + 48, fd);
+	else
+		ft_putchar_fd(48 - nb, fd);
+}
+
+void			ft_putnbr_fd(int n, int fd)
+{
+	if (!ft_ispositive(n))
+	{
+		ft_putchar_fd('-', fd);
+		ft_calcul_nb(n, fd);
+	}
+	else
+		ft_calcul_nb(n, fd);
 }

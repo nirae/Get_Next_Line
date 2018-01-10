@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lsti.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/12/06 20:20:53 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/12/09 12:10:25 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+t_list		*ft_lsti(t_list *lst, int i)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	int j;
 
-	line = NULL;
-	i = 0;
-	if (argc == 2)
+	if (lst == NULL || i > ft_lstlen(lst) || i < 0)
+		return (NULL);
+	j = 0;
+	while (j < i)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
+		lst = lst->next;
+		j++;
 	}
-	return (0);
+	return (lst);
 }

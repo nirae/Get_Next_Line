@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_count_words.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/22 08:25:04 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/22 08:36:02 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+static int	ft_is_ok(char c, char sep)
 {
-	int		fd;
-	char	*line;
-	int		i;
-
-	line = NULL;
-	i = 0;
-	if (argc == 2)
-	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
-	}
+	if (c != sep && c != '\0')
+		return (1);
 	return (0);
+}
+
+int			ft_count_words(char *str, char sep)
+{
+	if (*str == '\0')
+		return (0);
+	else if (ft_is_ok(*str, sep) && !ft_is_ok(*(str + 1), sep))
+		return (1 + ft_count_words(str + 1, sep));
+	return (0 + ft_count_words(str + 1, sep));
 }

@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strrev.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/20 22:12:47 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/20 22:13:29 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
-
-int		main(int argc, char **argv)
+char	*ft_strrev(char *str)
 {
-	int		fd;
-	char	*line;
+	char	tmp;
 	int		i;
+	int		len;
 
-	line = NULL;
 	i = 0;
-	if (argc == 2)
+	len = 0;
+	while (str[i] != '\0')
+		i++;
+	i--;
+	while (i > len)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
-			return (0);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			ft_putendl(line);
-		}
-		ft_putnbr(i);
-		close(fd);
+		tmp = str[i];
+		str[i] = str[len];
+		str[len] = tmp;
+		i--;
+		len++;
 	}
-	return (0);
+	return (str);
 }

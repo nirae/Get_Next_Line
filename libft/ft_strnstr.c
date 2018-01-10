@@ -1,37 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Created: 2017/11/19 22:54:02 by ndubouil          #+#    #+#             */
+/*   Updated: 2017/11/20 07:43:19 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int argc, char **argv)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	int		fd;
-	char	*line;
-	int		i;
+	size_t	i;
+	size_t	j;
+	size_t	needle_len;
 
-	line = NULL;
+	needle_len = ft_strlen(needle);
+	if (ft_strlen(needle) == 0)
+		return ((char *)haystack);
 	i = 0;
-	if (argc == 2)
+	while (haystack[i] != '\0' && i < len)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) < 0)
+		j = 0;
+		if (i + needle_len > len)
 			return (0);
-		while (get_next_line(fd, &line) > 0)
+		while (haystack[i + j] == needle[j])
 		{
-			i++;
-			ft_putendl(line);
+			j++;
+			if (needle[j] == '\0')
+				return ((char *)&haystack[i]);
 		}
-		ft_putnbr(i);
-		close(fd);
+		i++;
 	}
 	return (0);
 }
