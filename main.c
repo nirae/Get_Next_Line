@@ -6,7 +6,7 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:44:43 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/09 17:38:58 by ndubouil         ###   ########.fr       */
+/*   Updated: 2018/01/11 08:53:33 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ int		main(int argc, char **argv)
 		{
 			i++;
 			ft_putendl(line);
+			ft_strdel(&line);
 		}
+		ft_strdel(&line);
 		ft_putnbr(i);
 		close(fd);
 	}
