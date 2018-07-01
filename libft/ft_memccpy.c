@@ -6,7 +6,7 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 10:28:41 by ndubouil          #+#    #+#             */
-/*   Updated: 2017/11/22 11:26:44 by ndubouil         ###   ########.fr       */
+/*   Updated: 2018/07/01 16:26:32 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 	{
 		dest[i] = source[i];
 		if (source[i] == stop_char)
-			return (&dst[i + 1]);
+			return (&dest[i + 1]);
 		i++;
 	}
 	return (NULL);

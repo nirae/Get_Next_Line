@@ -6,13 +6,13 @@
 /*   By: ndubouil <ndubouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 08:47:49 by ndubouil          #+#    #+#             */
-/*   Updated: 2018/01/10 16:34:34 by ndubouil         ###   ########.fr       */
+/*   Updated: 2018/07/01 16:25:57 by ndubouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_file	*ft_newfile(int fd)
+static t_file	*ft_newfile(int fd)
 {
 	t_file *file;
 
@@ -27,7 +27,7 @@ t_file	*ft_newfile(int fd)
 	return (file);
 }
 
-t_list	*ft_lstsearch(t_list **lst, int fd)
+static t_list	*ft_lstsearch(t_list **lst, int fd)
 {
 	t_list		*tmp;
 
@@ -35,7 +35,11 @@ t_list	*ft_lstsearch(t_list **lst, int fd)
 	while (tmp != NULL)
 	{
 		if (T_FILE_FD == fd)
+		{
+			if (!T_FILE_BUFF)
+				T_FILE_BUFF = ft_strnew(0);
 			return (tmp);
+		}
 		tmp = tmp->next;
 	}
 	if (!(tmp = ft_lstnew(NULL, sizeof(t_file *))))
@@ -45,15 +49,14 @@ t_list	*ft_lstsearch(t_list **lst, int fd)
 	return (tmp);
 }
 
-int		final_return(char **s, int n_lus, t_list **tmp)
+static int		final_return(char **s, int n_lus)
 {
 	int		i;
 	char	*temp;
 
 	if (n_lus == 0 && **s == 0)
 	{
-		ft_memdel((void **)s);
-		ft_strclr((*tmp)->content);
+		ft_strdel(s);
 		return (0);
 	}
 	if (ft_strpos(*s, '\n') == (int)ft_strlen(*s))
@@ -66,7 +69,7 @@ int		final_return(char **s, int n_lus, t_list **tmp)
 	return (1);
 }
 
-int		get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
 	static t_list	*lst = NULL;
 	t_list			*tmp;
@@ -74,7 +77,7 @@ int		get_next_line(const int fd, char **line)
 	int				n_lus;
 	char			*temp;
 
-	if (BUFF_SIZE <= 0 | fd == 1 | (n_lus = read(fd, "", 0)) == -1)
+	if (BUFF_SIZE <= 0 || fd == 1 || (n_lus = read(fd, "", 0)) == -1)
 		return (-1);
 	if (!(buff = ft_strnew(BUFF_SIZE)))
 		return (-1);
@@ -90,5 +93,5 @@ int		get_next_line(const int fd, char **line)
 	}
 	ft_strdel(&buff);
 	*line = ft_strsub(T_FILE_BUFF, 0, ft_strpos(T_FILE_BUFF, '\n'));
-	return (final_return(&T_FILE_BUFF, n_lus, &tmp));
+	return (final_return(&T_FILE_BUFF, n_lus));
 }
